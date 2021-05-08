@@ -51,4 +51,13 @@ print('t3 view([2,-1])后变为二阶：',t3.view([2,-1]))
 print('也可以用reshape方法改变形状：',t3.reshape([2,1]))
 # 5.获取维数（阶数）:torch.dim()
 print('t3阶数：',t3.dim())
-
+# 6.获取最大值：tensor.max()
+print('获取t3最大值：',t3.max())
+# 7.转置：tensor.t（）  t为二维矩阵转置 在numpy中是T
+t4=torch.Tensor(np.arange(24).reshape(4,6))
+print('t4转置前：',t4)
+print('t4转置：',t4.t())
+t4=torch.Tensor(np.arange(24).reshape(2,3,4))
+print('t4转置前：',t4)
+print('t4 transpose转置：',t4.transpose(0,1))   # 交换0和1维度的值
+print('t4 permute转置：',t4.permute(1,0,2))   # 三个参数为三个维度顺序，和上面0,1维度交换结果一致
