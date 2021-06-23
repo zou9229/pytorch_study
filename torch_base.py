@@ -36,7 +36,7 @@ print(t2.item())
 t2=t2.numpy()
 print(t2)
 # 3.获取形状:torch.size()。用size可以获取某一维度的形状时，可以传数据
-t3=torch.Tensor([[[1,2]]])
+t3=torch.Tensor([[[1,2]]])      # (对应68行)torch.Tensor是默认的tensor类型（torch.FlaotTensor）的简称。
 print('t3形状（用shape方法）：',t3.shape)  # 和np中的shape一样
 print('t3最后一个维度形状 shape[2] ：',t3.shape[-1])
 print('t3形状（用size())方法）：',t3.size())
@@ -55,9 +55,44 @@ print('t3阶数：',t3.dim())
 print('获取t3最大值：',t3.max())
 # 7.转置：tensor.t（）  t为二维矩阵转置 在numpy中是T
 t4=torch.Tensor(np.arange(24).reshape(4,6))
-print('t4转置前：',t4)
-print('t4转置：',t4.t())
+print('二维t4转置前：',t4)
+print('二维t4转置：',t4.t())
 t4=torch.Tensor(np.arange(24).reshape(2,3,4))
-print('t4转置前：',t4)
-print('t4 transpose转置：',t4.transpose(0,1))   # 交换0和1维度的值
-print('t4 permute转置：',t4.permute(1,0,2))   # 三个参数为三个维度顺序，和上面0,1维度交换结果一致
+print('三维t4转置前：',t4)
+print('三维t4 transpose转置：',t4.transpose(0,1))   # 交换0和1维度的值
+print('三维t4 permute转置：',t4.permute(1,0,2))   # 三个参数为三个维度顺序，和上面0,1维度交换结果一致
+print('取t4中的某个值：',t4[1,2,1])   # 赋值t4[1,2,1]=10
+print('t4中某维切片值：',t4[1,:,:])
+print('加下划线表示对原tensor也进行修改（t4.transpose（0,1））：',t4.transpose_(0,1),'\nt4:',t4)
+# 8.dtype获取数据类型
+print('t4数据类型：',t4.dtype)
+t5=torch.tensor(12,dtype=torch.int32)  # （对应39行）torch.tensor根据后面的data创建Tensor，Tensor类型根据数据进行推断。
+print('t5数据类型：',t5.dtype)
+t5=torch.Tensor(np.arange(12,dtype=np.int32))
+print('np创建的tensor数据类型：',t5.dtype)
+print('np创建的tensor转换为long的数据类型：',t5.long().dtype)
+
+# 三、torch.Tensor和torch.tensor区别
+print('Tensor([])传入列表,数据类型和torch.FloatTensor一样',torch.Tensor([1,2]))
+print('Tensor(1,2)传入维度，输出随机值',torch.Tensor(2))
+# torch.tensor为创建tensor方法
+
+# 四、tensor的其他操作
+# 1.tensor和tensor组加
+x=t5.new_ones(5,3,dtype=torch.float)
+y=torch.rand(5,3)
+print('x+y:',x+y)
+print('torch.add(x,y):',torch.add(x,y))
+print('x.add(y):',x.add(y))
+# 大部分方法加下划线方法会对原x进行修改
+print('x.add_(y):',x.add_(y),'\nx:',x)
+
+# 五、使用cuda加速
+print(torch.cuda.is_available())
+#device=torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+device=torch.device("cuda" if torch.cuda.is_available() else "cpu")
+c=torch.zeros([2,3],device=device)
+print('cuda中tensor',c)
+# 或者直接将cpu的tensor放入gpu
+c1=x.to(device)
+print("x转化为cuda中tensor",c1)
